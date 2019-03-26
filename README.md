@@ -8,7 +8,7 @@ If you have [Docker](https://www.docker.com/) installed, playing around with
 Carp is as easy as running:
 
 ```
-docker run -it carp-lang/carp
+docker run -it carplang/carp
 ```
 
 This will give you a shell in which you can play around with Carp. To verify
