@@ -22,6 +22,6 @@ RUN apt-get update \
     && apt-get install -y clang libgmp10 --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR $CARP_DIR
+WORKDIR /mnt/app
 
 CMD ["carp"]
