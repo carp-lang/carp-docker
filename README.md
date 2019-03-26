@@ -1,6 +1,8 @@
 # carp-docker
 
-A Dockerfile for Carp development, and trying out Carp without installing!
+A Dockerfiles for Carp development, and trying out Carp without installing!
+- [carplang/carp:latest](Dockerfile) - *native executable/c builder*
+- [carplang/carp:emcc](Dockerfile.emcc) *same as above + WASM/ASM.js compiler*
 
 ## Try it!
 
@@ -34,17 +36,48 @@ FROM carplang/carp:latest
 
 ### As a carp builder:
 
+#### First run(from this repo root) to build `.c` files:
 ``` bash
-# from this repo root:
 docker run -v $(pwd)/example:/mnt/app \
            --user 1000:1000 \
            --rm \
            carplang/carp:latest \
            carp -b hello_world.carp
+```
 
-# You can run resulting executable from the host(If you run x64 glibc Linux)
+####  Then you can run resulting executable from the host(If it's x64glibc Linux)
+``` bash
 ./example/out/HelloWorld
 ```
+
+#### Or with a browser(WASM/ASM.JS):
+
+##### Generate web files:
+``` bash
+docker run -v $(pwd)/example/out/:/mnt/app \
+            --rm \
+            -ti \
+            carplang/carp:emcc \
+            emcc main.c \
+                 -s WASM=1 \
+                 -I/opt/carp/core \
+                 -o hello.html \
+                 --emrun
+```
+
+##### Serve:
+``` bash
+docker run -v $(pwd)/example/out/:/mnt/app \
+           --rm \
+           -ti \
+           --net=host \
+           carplang/carp:emcc \
+           emrun --no_browser \
+                 --port 8080 \
+                 hello.html
+```
+**Go to http://localhost:8080/hello.html (browser must support WASM)**
+
 
 <hr/>
 

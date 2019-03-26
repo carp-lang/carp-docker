@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y clang --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 
-FROM debian:latest
+FROM apiaryio/emcc:latest
 
 COPY --from=builder /app /opt/carp
 
