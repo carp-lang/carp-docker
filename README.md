@@ -34,6 +34,25 @@ projects. This is as simple as starting your Dockerfile with:
 FROM carplang/carp:latest
 ```
 
+Or package only your app:
+
+``` bash
+FROM carplang/carp:latest as builder
+
+COPY example/hello_world.carp /mnt/app/
+
+RUN carp -b hello_world.carp
+
+FROM scratch
+
+COPY --from=builder /mnt/app/out/HelloWorld /usr/local/bin/
+
+ENTRYPOINT ["/usr/local/bin/HelloWorld"]
+
+```
+
+Build: `docker build -t hello_carp -f <DOCKERFILE_NAME> .` and run: `docker run --rm hello_carp`
+
 ### As a carp builder:
 
 #### First run(from this repo root) to build `.c` files:
