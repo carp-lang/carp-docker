@@ -1,8 +1,11 @@
 # carp-docker
 
-A Dockerfiles for Carp development, and trying out Carp without installing!
-- [carplang/carp:latest](Dockerfile) - *native executable/c builder*
-- [carplang/carp:emcc](Dockerfile.emcc) *same as above + WASM/ASM.js compiler*
+Dockerfiles for Carp development, and trying out Carp without installing!
+
+The following Dockerfiles are provided:
+
+- [carplang/carp:latest](Dockerfile) — *a native executable or C build host*
+- [carplang/carp:emcc](Dockerfile.emcc) — *a WASM/ASM.js build host*
 
 ## Try it!
 
@@ -20,8 +23,8 @@ Carp works as intended, you can try typing:
 (defn main [] (IO.println "hi"))
 ```
 
-in the REPL. Nothing will happen, but if you build it using `:bx`, `hi` should
-be printed to your screen! Amazing, right?
+in the REPL. Nothing will happen, but if you build it by typing `:bx`, `hi`
+should be printed to your screen! Amazing, right?
 
 ## Use it!
 
@@ -36,7 +39,7 @@ FROM carplang/carp:latest
 
 Or package only your app:
 
-``` bash
+```bash
 FROM carplang/carp:latest as builder
 
 COPY example/hello_world.carp /mnt/app/
@@ -48,15 +51,17 @@ FROM scratch
 COPY --from=builder /mnt/app/out/HelloWorld /usr/local/bin/
 
 ENTRYPOINT ["/usr/local/bin/HelloWorld"]
-
 ```
 
-Build: `docker build -t hello_carp -f <DOCKERFILE_NAME> .` and run: `docker run --rm hello_carp`
+You can then build your program using `docker build -t hello_carp -f
+<DOCKERFILE_NAME> .` and run it using `docker run --rm hello_carp`!
 
-### As a carp builder:
+### As a build host
 
-#### First run(from this repo root) to build `.c` files:
-``` bash
+To build `.c` files and compile them to a native executable, first run the
+following from the repository root:
+
+```bash
 docker run -v $(pwd)/example:/mnt/app \
            --user 1000:1000 \
            --rm \
@@ -64,15 +69,19 @@ docker run -v $(pwd)/example:/mnt/app \
            carp -b hello_world.carp
 ```
 
-####  Then you can run resulting executable from the host(If it's x64glibc Linux)
-``` bash
+Then you can run the resulting executable from the host, if it's x64 Linux with
+glibc:
+
+```bash
 ./example/out/HelloWorld
 ```
 
-#### Or with a browser(WASM/ASM.JS):
+### As a WASM/ASM.js build host
 
-##### Generate web files:
-``` bash
+To generate the web files, run the following after executing the build step that
+produces the `.c` files from above:
+
+```bash
 docker run -v $(pwd)/example/out/:/mnt/app \
             --rm \
             -ti \
@@ -84,8 +93,9 @@ docker run -v $(pwd)/example/out/:/mnt/app \
                  --emrun
 ```
 
-##### Serve:
-``` bash
+Alternatively you can serve the website directly from Docker!
+
+```bash
 docker run -v $(pwd)/example/out/:/mnt/app \
            --rm \
            -ti \
@@ -95,8 +105,10 @@ docker run -v $(pwd)/example/out/:/mnt/app \
                  --port 8080 \
                  hello.html
 ```
-**Go to http://localhost:8080/hello.html (browser must support WASM)**
 
+The above will open port `8080` and serve the produced files there. This means
+that you should be able to go to `http://localhost:8080/hello.html` and see your
+app if your browser supports WASM!
 
 <hr/>
 
