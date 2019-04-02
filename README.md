@@ -5,7 +5,7 @@ Dockerfiles for Carp development, and trying out Carp without installing!
 The following Dockerfiles are provided:
 
 - [carplang/carp:latest](Dockerfile) — *a native executable or C build host*
-- [carplang/carp:emcc](Dockerfile.emcc) — *a WASM/ASM.js build host*
+- [carplang/carp:emcc](Dockerfile.emcc) — *carplang/carp:latest extended with WASM/ASM.js build host capabilities*
 
 ## Try it!
 
