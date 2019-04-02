@@ -93,7 +93,7 @@ docker run -v $(pwd)/example/out/:/mnt/app \
                  --emrun
 ```
 
-Alternatively you can serve the website directly from Docker!
+You can serve the website directly from Docker afterwards!
 
 ```bash
 docker run -v $(pwd)/example/out/:/mnt/app \
