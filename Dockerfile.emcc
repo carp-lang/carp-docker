@@ -3,7 +3,8 @@ FROM fpco/stack-build:$STACK_VERSION as builder
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y clang --no-install-recommends \
+RUN apt-get update \
+    && apt-get install -y clang libncurses-dev --no-install-recommends \
     && git clone https://github.com/carp-lang/carp . \
     && stack build && stack install && stack clean \
     && mv /root/.local/bin /app/bin \

@@ -19,7 +19,7 @@ ENV CARP_DIR=/opt/carp/
 ENV PATH=$PATH:"${CARP_DIR}bin"
 
 RUN apt-get update \
-    && apt-get install -y clang libgmp10 libtinfo5 --no-install-recommends \
+    && apt-get install -y clang libgmp10 libtinfo5 libncurses-dev --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /mnt/app
