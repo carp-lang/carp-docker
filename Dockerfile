@@ -1,4 +1,4 @@
-ARG STACK_VERSION=lts-13
+ARG STACK_VERSION=lts-17
 FROM fpco/stack-build:$STACK_VERSION as builder
 
 WORKDIR /app
@@ -11,7 +11,7 @@ RUN apt-get update && apt-get install -y clang --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 
-FROM debian:latest
+FROM bitnami/minideb:latest
 
 COPY --from=builder /app /opt/carp
 

@@ -1,4 +1,4 @@
-ARG STACK_VERSION=lts-13
+ARG STACK_VERSION=lts-17
 FROM fpco/stack-build:$STACK_VERSION as builder
 
 WORKDIR /app
@@ -12,7 +12,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 
-FROM apiaryio/emcc:latest
+FROM emscripten/emsdk:latest
 
 COPY --from=builder /app /opt/carp
 
@@ -20,7 +20,7 @@ ENV CARP_DIR=/opt/carp/
 ENV PATH=$PATH:"${CARP_DIR}bin"
 
 RUN apt-get update \
-    && apt-get install -y clang libgmp10 --no-install-recommends \
+    && apt-get install -y clang libgmp10 libtinfo5 libncurses-dev --no-install-recommends \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /mnt/app
